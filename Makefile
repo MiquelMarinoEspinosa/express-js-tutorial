@@ -14,7 +14,7 @@ run:
 		--rm \
 		--name app.node \
 		-v .:/app  \
-		-p 8000:8000 \
+		-p 3000:3000 \
 		app/node
 
 up: build run
