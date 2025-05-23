@@ -16,6 +16,6 @@ USER $UNAME
 RUN git config --global user.name ${GIT_USER_NAME}
 RUN git config --global user.email ${GIT_USER_EMAIL}
 RUN git config --global --add safe.directory /app
-ENV PATH="$PATH:/app/Node JS Basics/node_modules/.bin"
+ENV PATH="$PATH:/app/node_modules/.bin"
 
 WORKDIR /app
