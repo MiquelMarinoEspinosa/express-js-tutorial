@@ -1,15 +1,20 @@
 //Import package
 const express = require('express');
+const fs = require('fs');
+
 let app = express();
+let movies = JSON.parse(fs.readFileSync('./data/movies.json'));
 
-//Route = Http Method + Url
-app.get('/', (req, res) => {
-    res.status(200).json({message: 'Hello, world', status: 200})
+//GET - api/movies
+app.get('/api/v1/movies', (req, res) => {
+    res.status(200).json({
+        status: "success",
+        count: movies.length,
+        data : {
+            movies: movies
+        }
+    })
 })
-
-// app.post('/', () => {
-
-// })
 
 //Create a server
 const port = 3000;
