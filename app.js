@@ -18,6 +18,31 @@ app.get('/api/v1/movies', (req, res) => {
     })
 })
 
+//GET - api/v1/movies/id
+app.get('/api/v1/movies/:id', (req, res) => {
+    //console.log(req.params);
+    //convert id to number type
+    const id = req.params.id * 1;
+
+    //find movie based on id parameter
+    let movie = movies.find(el => el.id === id);
+
+    if (!movie) {
+        return res.status(404).json({
+            status: "fail",
+            message: "Movie with ID " + id + " is not found"
+        });
+    }
+
+    //send movie in the response
+    res.status(200).json({
+        status: "success",
+        data: {
+            movie: movie
+        }
+    });
+})
+
 //POAR - api/v1/movies
 app.post('/api/v1/movies', (req, res) => {
     //console.log(req.body);
