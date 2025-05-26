@@ -1,6 +1,7 @@
 //Import package
 const express = require('express');
 const fs = require('fs');
+const { monitorEventLoopDelay } = require('perf_hooks');
 
 let app = express();
 let movies = JSON.parse(fs.readFileSync('./data/movies.json'));
@@ -61,6 +62,32 @@ app.post('/api/v1/movies', (req, res) => {
         })
     })
     //res.send('Created');
+})
+
+app.patch('/api/v1/movies/:id', (req, res) => {
+    let id = req.params.id * 1;
+    let movieToUpdate = movies.find(movie => movie.id === id);
+    let index = movies.indexOf(movieToUpdate); //3
+
+    if (!movieToUpdate) {
+        return res.status(404).json({
+            status: 'fail',
+            message: 'No movie object with ID ' + id + ' is found'
+        });
+    }
+
+    Object.assign(movieToUpdate, req.body);
+
+    movies[index] = movieToUpdate;
+
+    fs.writeFile('./data/movies.json', JSON.stringify(movies), (err) => {
+        res.status(200).json({
+            status: "sucess",
+            data: {
+                movie: movieToUpdate
+            }
+        });
+    });
 })
 
 //Create a server
