@@ -1,6 +1,7 @@
 //Import package
 const express = require('express');
 const fs = require('fs');
+const morgan = require('morgan');
 
 let app = express();
 let movies = JSON.parse(fs.readFileSync('./data/movies.json'));
@@ -11,6 +12,7 @@ const logger = (req, res, next) => {
 }
 
 app.use(express.json());
+app.use(morgan('dev'));
 app.use(logger);
 app.use((req, res, next) => {
     req.requestedAt = new Date().toISOString();
