@@ -22,8 +22,8 @@ up: build run
 shell:
 	docker exec --user node -i -t app.node bash
 
-stop:
-	docker stop app.node
+down:
+	docker down app.node
 
 rm:
 	docker rmi app/node

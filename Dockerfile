@@ -1,4 +1,4 @@
-FROM node:latest
+FROM node:current-slim
 
 ARG UNAME=""
 ARG UID=""
@@ -7,7 +7,7 @@ ARG GID=""
 ARG GIT_USER_NAME=""
 ARG GIT_USER_EMAIL=""
 
-RUN apt-get update && apt-get install \
+RUN apt-get update && apt-get install -y \
     git
 
 RUN groupadd -g $GID -o $UNAME
