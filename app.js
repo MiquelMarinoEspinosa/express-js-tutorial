@@ -2,10 +2,26 @@
 const express = require('express');
 const fs = require('fs');
 
+let app = express();
+let movies = JSON.parse(fs.readFileSync('./data/movies.json'));
+
+const logger = (req, res, next) => {
+    console.log('Custom middleware called');
+    next();
+}
+
+app.use(express.json());
+app.use(logger);
+app.use((req, res, next) => {
+    req.requestedAt = new Date().toISOString();
+    next();
+});
+
 //ROUTE HANDLER FUNCTIONS
 const getAllMovies = (req, res) => {
     res.status(200).json({
         status: "success",
+        requestedAt: req.requestedAt,
         count: movies.length,
         data : {
             movies: movies
@@ -105,11 +121,6 @@ const deleteMovie = (req, res) => {
         });
     })
 };
-
-let app = express();
-let movies = JSON.parse(fs.readFileSync('./data/movies.json'));
-
-app.use(express.json())
 
 // app.get('/api/v1/movies', getAllMovies);
 // app.get('/api/v1/movies/:id', getMovie);
