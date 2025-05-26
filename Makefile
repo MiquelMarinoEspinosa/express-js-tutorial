@@ -23,7 +23,7 @@ shell:
 	docker exec --user node -i -t app.node bash
 
 down:
-	docker down app.node
+	docker stop app.node
 
 rm:
 	docker rmi app/node
