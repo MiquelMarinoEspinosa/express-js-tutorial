@@ -7,3 +7,4 @@ Requires docker installed. In the near future `Dockerfile` and `compose.yaml` fi
 docker compose up
 ```
 
+- The [Makefile](./Makefile) is deprecated. Use `docker compose` instead
