@@ -2,12 +2,8 @@
 
 Requires docker installed. In the near future `Dockerfile` and `compose.yaml` files will be created :)
 
-- Initialize docker container
+- Initialize docker dev environment
 ```
-make up
+docker compose up
 ```
 
-Access to docker container
-```
-make shell
-```
