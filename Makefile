@@ -26,4 +26,7 @@ down:
 	docker stop app.node
 
 rm:
+	docker rm app.node
+
+rmi:
 	docker rmi app/node
