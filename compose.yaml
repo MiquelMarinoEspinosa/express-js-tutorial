@@ -3,8 +3,8 @@
 services:
   app.node:
     container_name: app.node
-    #build:
-    #  context: .
+    build:
+      context: .
     image: app/node
     volumes:
       - .:/app
