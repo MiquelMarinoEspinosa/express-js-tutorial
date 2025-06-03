@@ -1,0 +1,27 @@
+mongosh --username root --password   --host "localhost" --port 27017
+
+use sampledb
+
+cls
+
+db.customer.find()
+db.customer.find({name: 'Rashid'})
+db.customer.find({name: 'Rashid'}, {address: 0})
+db.customer.find({name: 'Rashid'}, {address: 1})
+db.customer.find({name: 'Rashid'}, {address: 1})
+db.customer.find({"purchase.name": "Samsung model"})
+db.customer.findOne({name: "Rashid"}).subscription.renewalDate.month
+
+db.customer.updateOne({name: "Rashid"}, {$set: {"subscription.renewalDate.year": 2024}})
+db.customer.updateOne({name: "Rashid"}, {$set: {"subscription.type": "yearly"}})
+db.customer.updateMany({name: "John"}, {$set: {gender:"unknown"}})
+db.customer.updateMany({name: "John"}, {$set: {country:"UK"}})
+db.customer.updateOne({name: "Sara"}, {$set: {age: 50}})
+
+db.customer.deleteMany({})
+db.customer.deleteMany({name:"mark"})
+db.customer.deleteOne({name: "john"})
+
+db.demo.insertOne({name: 'John', isAdmin: true, age: 34, dob: new Date(), createdOn: new Timestamp()})
+db.customer.insertMany([{name: "mark", gender: "male", age: 27},{name: "mark", gender: "male", age:28},{name: "john", gender: "male", age:33}, {name: "john", gender: "male", age:32}, {name: "mark", gender:"male", age:30}])
+db.customer.insertOne({ _id: "unique-id-1", name: "Steve", age: 30 })
