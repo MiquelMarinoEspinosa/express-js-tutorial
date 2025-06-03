@@ -23,6 +23,25 @@ mongoose
     console.log("Some error has occurred");
   });
 
+const movieSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: [true, "Name is required field!"],
+    unique: true,
+  },
+  description: String,
+  duration: {
+    type: Number,
+    required: [true, "Duration is required field!"],
+  },
+  ratings: {
+    type: Number,
+    default: 1.0,
+  },
+});
+
+const movie = mongoose.model("Movie", movieSchema);
+
 app.listen(port, () => {
   console.log("server has started...");
 });
