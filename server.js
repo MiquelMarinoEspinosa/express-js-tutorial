@@ -40,7 +40,22 @@ const movieSchema = new mongoose.Schema({
   },
 });
 
-const movie = mongoose.model("Movie", movieSchema);
+const Movie = mongoose.model("Movie", movieSchema);
+
+const testMovie = new Movie({
+  name: "Intersteller",
+  description: "A thrilling sci-fi movie with space adventure and great action",
+  duration: 180,
+});
+
+testMovie
+  .save()
+  .then((doc) => {
+    console.log(doc);
+  })
+  .catch((err) => {
+    console.log("Error occurred: " + err);
+  });
 
 app.listen(port, () => {
   console.log("server has started...");
