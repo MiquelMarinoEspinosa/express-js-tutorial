@@ -1,8 +1,47 @@
 const Movie = require("./../Models/movieModel");
 
-exports.getAllMovies = (req, res) => {};
+exports.getAllMovies = async (req, res) => {
+  try {
+    const movies = await Movie.find();
+    res.status(200).json({
+      status: "success",
+      length: movies.length,
+      data: {
+        movies,
+      },
+    });
+  } catch (err) {
+    res.status(404).json({
+      status: "fail",
+      message: err.message,
+    });
+  }
+};
 
-exports.getMovie = (req, res) => {};
+exports.getMovie = async (req, res) => {
+  try {
+    //const movie = await Movie.find({__id: req.params.id});
+    const movie = await Movie.findById(req.params.id);
+    if (movie === null) {
+      res.status(404).json({
+        status: "fail",
+        message: "Movie not found",
+      });
+      return;
+    }
+    res.status(200).json({
+      status: "success",
+      data: {
+        movie,
+      },
+    });
+  } catch (err) {
+    res.status(404).json({
+      status: "fail",
+      message: "Movie not found: " + err.message,
+    });
+  }
+};
 
 exports.createMovie = async (req, res) => {
   try {
@@ -13,10 +52,10 @@ exports.createMovie = async (req, res) => {
         movie,
       },
     });
-  } catch (error) {
+  } catch (err) {
     res.status(400).json({
       status: "fail",
-      message: error.message,
+      message: err.message,
     });
   }
 };
