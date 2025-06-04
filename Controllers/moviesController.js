@@ -60,6 +60,32 @@ exports.createMovie = async (req, res) => {
   }
 };
 
-exports.updateMovie = (req, res) => {};
+exports.updateMovie = async (req, res) => {
+  try {
+    const movie = await Movie.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+      runValidators: true,
+    });
+
+    if (movie === null) {
+      res.status(404).json({
+        status: "fail",
+        message: "Movie not found",
+      });
+      return;
+    }
+    res.status(200).json({
+      status: "success",
+      data: {
+        movie,
+      },
+    });
+  } catch (err) {
+    res.status(404).json({
+      status: "fail",
+      message: err.message,
+    });
+  }
+};
 
 exports.deleteMovie = (req, res) => {};
