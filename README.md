@@ -17,3 +17,5 @@ To connect to mongo db via mongosh from the `host`
 ```
 mongosh --username root --password   --host "localhost" --port 27017
 ```
+
+Copy the `config.env.dist` as `config.env` and replace the `<CONNECTION>` with the real connection string to the `mongo database`
