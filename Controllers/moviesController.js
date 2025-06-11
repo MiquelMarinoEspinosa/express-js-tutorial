@@ -2,7 +2,14 @@ const Movie = require("./../Models/movieModel");
 
 exports.getAllMovies = async (req, res) => {
   try {
-    const movies = await Movie.find();
+    console.log(req.query);
+    const movies = await Movie.find(req.query);
+    // const movies = await Movie.find()
+    //   .where("duration")
+    //   .equals(req.query.duration)
+    //   .where("ratings")
+    //   .equals(req.query.ratings);
+
     res.status(200).json({
       status: "success",
       length: movies.length,
