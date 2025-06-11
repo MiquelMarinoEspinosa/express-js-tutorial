@@ -2,8 +2,14 @@ const Movie = require("./../Models/movieModel");
 
 exports.getAllMovies = async (req, res) => {
   try {
-    console.log(req.query);
-    const movies = await Movie.find(req.query);
+    const excludeFields = ["sort", "page", "limit", "fields"];
+    const queryObj = { ...req.query };
+
+    excludeFields.forEach((el) => {
+      delete queryObj[el];
+    });
+
+    const movies = await Movie.find(queryObj);
     // const movies = await Movie.find()
     //   .where("duration")
     //   .equals(req.query.duration)
