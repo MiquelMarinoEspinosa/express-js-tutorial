@@ -13,7 +13,17 @@ exports.getAllMovies = async (req, res) => {
     queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, (match) => `$${match}`);
     const query = JSON.parse(queryStr);
 
-    const movies = await Movie.find(query);
+    let queryMovies = Movie.find(query);
+
+    if (req.query.sort) {
+      const sortBy = req.query.sort.split(",").join(" ");
+      queryMovies.sort(sortBy);
+    } else {
+      queryMovies.sort("-createdAt");
+    }
+
+    const movies = await queryMovies;
+
     // const query = Movie.find();
 
     // if (req.query.duration) {
