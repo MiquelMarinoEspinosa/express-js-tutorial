@@ -9,12 +9,34 @@ exports.getAllMovies = async (req, res) => {
       delete queryObj[el];
     });
 
-    const movies = await Movie.find(queryObj);
+    let queryStr = JSON.stringify(queryObj);
+    queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, (match) => `$${match}`);
+    const query = JSON.parse(queryStr);
+
+    const movies = await Movie.find(query);
+    // const query = Movie.find();
+
+    // if (req.query.duration) {
+    //   query.where("duration").gte(req.query.duration);
+    // }
+
+    // if (req.query.ratings) {
+    //   query.where("ratings").gte(req.query.ratings);
+    // }
+
+    // if (req.query.price) {
+    //   query.where("price").lte(req.query.price);
+    // }
+
+    // const movies = await query.exec();
+
     // const movies = await Movie.find()
-    //   .where("duration")
-    //   .equals(req.query.duration)
-    //   .where("ratings")
-    //   .equals(req.query.ratings);
+    //   .where('duration')
+    //   .gte(req.query.duration)
+    //   .where('ratings')
+    //   -gte(req.query.ratings)
+    //   .where('price')
+    //   .lte(req.query.price);
 
     res.status(200).json({
       status: "success",
