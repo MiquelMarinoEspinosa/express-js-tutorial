@@ -1,73 +1,15 @@
 const Movie = require("./../Models/movieModel");
+const ApiFeatures = require("../Utils/ApiFeatures");
 
 exports.getAllMovies = async (req, res) => {
   try {
-    const excludeFields = ["sort", "page", "limit", "fields"];
-    const queryObj = { ...req.query };
+    const features = new ApiFeatures(Movie.find(), req.query)
+      .filter()
+      .sort()
+      .limitFields()
+      .paginate();
 
-    excludeFields.forEach((el) => {
-      delete queryObj[el];
-    });
-
-    let queryStr = JSON.stringify(queryObj);
-    queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, (match) => `$${match}`);
-    const query = JSON.parse(queryStr);
-
-    let queryMovies = Movie.find(query);
-
-    if (req.query.sort) {
-      const sortBy = req.query.sort.split(",").join(" ");
-      queryMovies = queryMovies.sort(sortBy);
-    } else {
-      queryMovies = queryMovies.sort("-createdAt");
-    }
-
-    if (req.query.fields) {
-      const fields = req.query.fields.split(",").join(" ");
-      console.log(fields);
-      queryMovies = queryMovies.select(fields);
-    } else {
-      queryMovies = queryMovies.select("-__v");
-    }
-
-    const page = parseInt(req.query.page) || 1;
-    const limit = parseInt(req.query.limit) || 10;
-    const skip = (page - 1) * limit;
-
-    queryMovies = queryMovies.skip(skip).limit(limit);
-
-    if (req.query.page) {
-      const moviesCount = await Movie.countDocuments();
-      if (skip >= moviesCount) {
-        throw new Error("This page is not found!");
-      }
-    }
-
-    const movies = await queryMovies;
-
-    // const query = Movie.find();
-
-    // if (req.query.duration) {
-    //   query.where("duration").gte(req.query.duration);
-    // }
-
-    // if (req.query.ratings) {
-    //   query.where("ratings").gte(req.query.ratings);
-    // }
-
-    // if (req.query.price) {
-    //   query.where("price").lte(req.query.price);
-    // }
-
-    // const movies = await query.exec();
-
-    // const movies = await Movie.find()
-    //   .where('duration')
-    //   .gte(req.query.duration)
-    //   .where('ratings')
-    //   -gte(req.query.ratings)
-    //   .where('price')
-    //   .lte(req.query.price);
+    const movies = await features.query;
 
     res.status(200).json({
       status: "success",
