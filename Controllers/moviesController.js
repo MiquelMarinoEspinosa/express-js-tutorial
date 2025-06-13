@@ -168,3 +168,22 @@ exports.deleteMovie = async (req, res) => {
     });
   }
 };
+
+exports.highestRated = async (req, res) => {
+  try {
+    const movies = await Movie.find().sort("-ratings").limit(5);
+
+    res.status(200).json({
+      status: "success",
+      length: movies.length,
+      data: {
+        movies,
+      },
+    });
+  } catch (err) {
+    res.status(404).json({
+      status: "fail",
+      message: err.message,
+    });
+  }
+};
