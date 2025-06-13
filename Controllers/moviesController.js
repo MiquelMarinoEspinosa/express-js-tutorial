@@ -17,9 +17,17 @@ exports.getAllMovies = async (req, res) => {
 
     if (req.query.sort) {
       const sortBy = req.query.sort.split(",").join(" ");
-      queryMovies.sort(sortBy);
+      queryMovies = queryMovies.sort(sortBy);
     } else {
-      queryMovies.sort("-createdAt");
+      queryMovies = queryMovies.sort("-createdAt");
+    }
+
+    if (req.query.fields) {
+      const fields = req.query.fields.split(",").join(" ");
+      console.log(fields);
+      queryMovies = queryMovies.select(fields);
+    } else {
+      queryMovies = queryMovies.select("-__v");
     }
 
     const movies = await queryMovies;
