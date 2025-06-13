@@ -30,6 +30,19 @@ exports.getAllMovies = async (req, res) => {
       queryMovies = queryMovies.select("-__v");
     }
 
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const skip = (page - 1) * limit;
+
+    queryMovies = queryMovies.skip(skip).limit(limit);
+
+    if (req.query.page) {
+      const moviesCount = await Movie.countDocuments();
+      if (skip >= moviesCount) {
+        throw new Error("This page is not found!");
+      }
+    }
+
     const movies = await queryMovies;
 
     // const query = Movie.find();
