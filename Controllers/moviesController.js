@@ -129,3 +129,41 @@ exports.highestRated = async (req, res) => {
     });
   }
 };
+
+exports.getMovieStats = async (req, res) => {
+  try {
+    const stats = await Movie.aggregate([
+      { $match: { ratings: { $gte: 4.5 } } },
+      {
+        $group: {
+          _id: "$releaseYear",
+          avgRating: { $avg: "$ratings" },
+          avgPrice: { $avg: "$price" },
+          minPrice: { $min: "$price" },
+          maxPrice: { $max: "$price" },
+          priceTotal: { $sum: "$price" },
+          movieCount: { $sum: 1 },
+        },
+      },
+      {
+        $sort: {
+          minPrice: 1,
+        },
+      },
+      { $match: { maxPrice: { $gte: 60 } } },
+    ]);
+
+    res.status(200).json({
+      status: "success",
+      count: stats.length,
+      data: {
+        stats,
+      },
+    });
+  } catch (err) {
+    res.status(404).json({
+      status: "fail",
+      message: err.message,
+    });
+  }
+};
