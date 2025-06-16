@@ -21,9 +21,6 @@ class ApiFeatures {
 
     this.query = this.query.find(query);
 
-    console.log("filter");
-    console.log(this);
-
     return this;
   }
 
@@ -35,8 +32,6 @@ class ApiFeatures {
       this.query = this.query.sort("-createdAt");
     }
 
-    console.log("sort");
-    console.log(this);
     return this;
   }
 
@@ -48,8 +43,6 @@ class ApiFeatures {
       this.query = this.query.select("-__v");
     }
 
-    console.log("limitFields");
-    console.log(this);
     return this;
   }
 
@@ -67,8 +60,6 @@ class ApiFeatures {
     //   }
     // }
 
-    console.log("paginate");
-    console.log(this.query);
     return this;
   }
 }
