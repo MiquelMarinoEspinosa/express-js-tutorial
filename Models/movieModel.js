@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
 const fs = require("fs");
-const { isModuleNamespaceObject } = require("util/types");
 
 const movieSchema = new mongoose.Schema(
   {
@@ -8,6 +7,8 @@ const movieSchema = new mongoose.Schema(
       type: String,
       required: [true, "Name is required field!"],
       unique: true,
+      maxlength: [100, "Movie name must not have more than 100 characters"],
+      minlength: [4, "Movie name must have at least 4 charachters"],
       trim: true,
     },
     description: {
@@ -21,6 +22,8 @@ const movieSchema = new mongoose.Schema(
     },
     ratings: {
       type: Number,
+      min: [1, "Ratings must be 1.0 or above."],
+      max: [10, "Ratings must be 10.0 or below"],
     },
     totalRating: {
       type: Number,
@@ -40,6 +43,20 @@ const movieSchema = new mongoose.Schema(
     genres: {
       type: [String],
       required: [true, "Genres is required field!"],
+      // enum: {
+      //   values: [
+      //     "Action",
+      //     "Adventure",
+      //     "Sci-Fi",
+      //     "Thriller",
+      //     "Crime",
+      //     "Drama",
+      //     "Comedy",
+      //     "Romance",
+      //     "Biography",
+      //   ],
+      //   message: "This genre does not exist",
+      // },
     },
     directors: {
       type: [String],
