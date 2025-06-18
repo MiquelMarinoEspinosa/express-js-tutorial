@@ -2,4 +2,4 @@ A new movie document with name Test 1 has been created by MANOJJHA
 A new movie document with name Test 2 has been created by MANOJJHA
 A new movie document with name Sample Movie has been created by MANOJJHA
 Query took 121 milliseconds to fetch the documentsQuery took 49 milliseconds to fetch the documentsA new movie document with name Test Movie 1 has been created by MANOJJHA
-Query took 193 milliseconds to fetch the documents
+Query took 193 milliseconds to fetch the documentsQuery took 222 milliseconds to fetch the documentsQuery took 33 milliseconds to fetch the documentsQuery took 81 milliseconds to fetch the documentsQuery took 198 milliseconds to fetch the documentsQuery took 33 milliseconds to fetch the documents

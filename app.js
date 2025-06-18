@@ -25,6 +25,13 @@ app.use((req, res, next) => {
 });
 
 //USING ROUTES
+
 app.use("/api/v1/movies", moviesRouter);
+app.all("/{*any}", (req, res, next) => {
+  res.status(404).json({
+    status: "fail",
+    message: `Cant's find ${req.originalUrl} on the server!`,
+  });
+});
 
 module.exports = app;
