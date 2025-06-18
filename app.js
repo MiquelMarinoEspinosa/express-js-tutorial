@@ -28,9 +28,23 @@ app.use((req, res, next) => {
 
 app.use("/api/v1/movies", moviesRouter);
 app.all("/{*any}", (req, res, next) => {
-  res.status(404).json({
-    status: "fail",
-    message: `Cant's find ${req.originalUrl} on the server!`,
+  // res.status(404).json({
+  //   status: "fail",
+  //   message: `Cant's find ${req.originalUrl} on the server!`,
+  // });
+  const err = new Error(`Cant's find ${req.originalUrl} on the server!`);
+  err.status = "fail";
+  err.statusCode = 404;
+
+  next(err);
+});
+
+app.use((error, req, res, next) => {
+  const statusCode = error.statusCode || 500;
+  const status = error.status || "error";
+  res.status(statusCode).json({
+    status: statusCode,
+    message: error.message,
   });
 });
 
