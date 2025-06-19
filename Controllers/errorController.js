@@ -1,16 +1,18 @@
-const devErrors = (res, error, statusCode) => {
-  res.status(statusCode).json({
-    status: statusCode,
+const CustomError = require("../Utils/CustomError");
+
+const devErrors = (res, error) => {
+  res.status(error.statusCode).json({
+    status: error.statusCode,
     message: error.message,
     stackTrace: error.stack,
     error: error,
   });
 };
 
-const prodErrors = (res, error, statusCode) => {
+const prodErrors = (res, error) => {
   if (error.isOperational) {
-    res.status(statusCode).json({
-      status: statusCode,
+    res.status(error.statusCode).json({
+      status: error.statusCode,
       message: error.message,
     });
   } else {
@@ -21,12 +23,21 @@ const prodErrors = (res, error, statusCode) => {
   }
 };
 
+const castErrorHandler = (err) => {
+  const msg = `Invalid value for ${err.path}: ${err.value}!`;
+  return new CustomError(msg, 400);
+};
+
 module.exports = (error, req, res, next) => {
-  const statusCode = error.statusCode || 500;
+  error.statusCode = error.statusCode || 500;
+  error.status = error.status || "error";
 
   if (process.env.NODE_ENV === "development") {
-    devErrors(res, error, statusCode);
+    devErrors(res, error);
   } else if (process.env.NODE_ENV === "production") {
-    prodErrors(res, error, statusCode);
+    if (error.name === "CastError") {
+      error = castErrorHandler(error);
+    }
+    prodErrors(res, error);
   }
 };
