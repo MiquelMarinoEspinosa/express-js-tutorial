@@ -74,9 +74,28 @@ exports.protect = asyncErrorHandler(async (req, res, next) => {
   );
 
   //3. if the user exists
+  const user = await User.findById(decodedToken.id);
 
+  if (!user) {
+    const err = new CustomError(
+      "The user with given token does not exist",
+      401
+    );
+    next(err);
+  }
+
+  const isPasswordChanged = await user.isPasswordChanged(decodedToken.iat);
   //4. If the user changed the password after the token was issued
+  if (isPasswordChanged) {
+    const error = new CustomError(
+      "The password has been changed recently. Please login again",
+      401
+    );
+    return next(error);
+  }
 
   //5. Alow user to access route
+  req.user = user;
+  console.log(req);
   next();
 });
